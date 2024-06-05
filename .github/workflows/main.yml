@@ -1,0 +1,52 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Set up Maven settings
+      run: |
+        mkdir -p ~/.m2
+        echo "<settings xmlns='http://maven.apache.org/SETTINGS/1.0.0'
+                      xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                      xsi:schemaLocation='http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd'>
+                  <servers>
+                    <server>
+                      <id>github</id>
+                      <username>walidhnf25</username>
+                      <password>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</password>
+                    </server>
+                  </servers>
+                </settings>" > ~/.m2/settings.xml
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    - name: Deploy to GitHub Packages
+      run: mvn deploy
