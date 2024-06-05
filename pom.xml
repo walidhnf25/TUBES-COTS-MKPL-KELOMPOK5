@@ -72,11 +72,11 @@
         </plugins>
     </build>
     
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/walidhnf25/TUBES-COTS-MKPL-KELOMPOK5</url>
-        </repository>
-    </distributionManagement>
+ 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/walidhnf25/TUBES-COTS-MKPL-KELOMPOK5</url>
+    </repository>
+  </distributionManagement>
 </project>
